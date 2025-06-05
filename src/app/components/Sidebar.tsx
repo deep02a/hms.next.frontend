@@ -55,16 +55,17 @@ export default function Sidebar({ name, role, gender }: SidebarProps) {
       {open && (
         <div
           onClick={() => setOpen(false)}
-          className="fixed inset-0  bg-opacity-30 z-40 md:hidden"
+          className="fixed inset-0 bg-opacity-30 z-40 md:hidden"
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:relative top-0 left-0 z-50 w-64 bg-white shadow-md p-4 space-y-6
+        className={`fixed md:relative inset-y-0 left-0 z-50 w-64 bg-white shadow-md p-4 space-y-6
         transform transition-transform duration-300 ease-in-out
-        ${open ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:block h-full md:h-screen`}
+        ${open ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:block min-h-screen overflow-y-auto`}
       >
+
         {/* Close Button (Mobile Only) */}
         <div className="md:hidden flex justify-end">
           <button onClick={() => setOpen(false)} aria-label="Close Sidebar">

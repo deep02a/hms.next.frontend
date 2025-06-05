@@ -22,7 +22,7 @@ export default function SymptomResultPage() {
         // Replace this URL with your future Spring Boot endpoint
         const res = await axios.get('http://localhost:8080/api/suggestions');
         setSuggestions(res.data);
-      } catch (err: any) {
+      } catch (err) {
         setError('Failed to fetch suggestions. Please try again later.');
         console.error(err);
       } finally {

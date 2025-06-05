@@ -6,8 +6,10 @@ import { Input } from '@/app/components/input';
 import { Button } from '@/app/components/button';
 import { Card, CardContent } from '@/app/components/card';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface Doctor {
+  id: string;
   name: string;
   specialty: string;
   rating: number;
@@ -16,18 +18,21 @@ interface Doctor {
 
 const fallbackDoctors: Doctor[] = [
   {
+    id: '1',
     name: 'Dr. Jane Doe',
     specialty: 'Cardiologist',
     rating: 4.8,
     reviews: 120,
   },
   {
+    id: '2',
     name: 'Dr. John Smith',
     specialty: 'Dermatologist',
     rating: 4.6,
     reviews: 98,
   },
   {
+    id: '3',
     name: 'Dr. Alice Johnson',
     specialty: 'Neurologist',
     rating: 4.9,
@@ -38,6 +43,7 @@ const fallbackDoctors: Doctor[] = [
 export default function ViewDoctorPage() {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -80,17 +86,31 @@ export default function ViewDoctorPage() {
       ) : (
         <>
           <div className="grid grid-cols-1 gap-6">
-            {doctors.map((doctor, index) => (
-              <Card key={index} className="flex items-center gap-4 p-4">
-                <CardContent className="flex flex-col space-y-1">
-                  <h2 className="text-lg font-semibold">{doctor.name}</h2>
-                  <p className="text-sm text-muted-foreground">{doctor.specialty}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {doctor.rating} ({doctor.reviews} reviews)
-                  </p>
-                  <Button className="w-24 mt-2">Book</Button>
-                </CardContent>
-              </Card>
+            {doctors.map((doctor) => (
+              <div
+                key={doctor.id}
+                onClick={() => router.push(`/dashboard/symptom-checker/result/allDoctor/${doctor.id}`)}
+                className="cursor-pointer hover:bg-gray-100 transition rounded-lg"
+              >
+                <Card className="flex items-center gap-4 p-4">
+                  <CardContent className="flex flex-col space-y-1">
+                    <h2 className="text-lg font-semibold">{doctor.name}</h2>
+                    <p className="text-sm text-muted-foreground">{doctor.specialty}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {doctor.rating} ({doctor.reviews} reviews)
+                    </p>
+                    <Button
+                      className="w-24 mt-2"
+                      onClick={(e: { stopPropagation: () => void; }) => {
+                        e.stopPropagation();
+                        router.push(`/dashboard/appointment/${doctor.id}`);
+                      }}
+                    >
+                      Book
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
 
